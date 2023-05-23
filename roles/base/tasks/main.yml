@@ -1,0 +1,32 @@
+---
+- name: Install Packages (Ubuntu)
+  apt:
+   name:
+   - apt-transport-https
+   - openssl
+   - default-jdk
+   - python3-firewall
+   state: present
+   update_cache: yes
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install Packages (CentOS)
+  yum:
+   name:
+   - yum-utils
+   - openssl
+   - java-11-openjdk
+   - java-11-openjdk-devel
+   - firewalld
+   - gnupg2
+   state: present
+   update_cache: yes
+  when: ansible_distribution == "CentOS"
+
+- name: Setting MOTD File
+  copy:
+   dest: /etc/motd
+   content: "Ansible Managed by {{ansible_user}}"
+   owner: root
+   group: root
+   mode: '644'
